@@ -1,58 +1,98 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# InvenSpace
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Aplikasi manajemen peminjaman inventaris sekolah (barang, peminjaman, komplain, dan mutasi stok) dibangun dengan Laravel, mengikuti ERD `InvenBarang`.
 
-## About Laravel
+## Struktur Basis Data
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Project ini mengimplementasikan 7 tabel utama sesuai ERD:
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+| Tabel | Deskripsi |
+|---|---|
+| `roles` | Peran pengguna (admin, guru, siswa) |
+| `users` | Pengguna sistem, dengan `kelas` (khusus siswa) dan `nip` (khusus guru) |
+| `items` | Data barang inventaris |
+| `loans` | Pengajuan peminjaman barang oleh siswa, divalidasi oleh guru |
+| `loan_items` | Detail barang yang dipinjam per pengajuan peminjaman |
+| `complaints` | Komplain siswa terkait barang/peminjaman |
+| `stock_mutations` | Riwayat mutasi stok barang (masuk/keluar) |
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## Requirement
 
-## Learning Laravel
+- **PHP 8.3 atau lebih tinggi** (⚠️ XAMPP resmi untuk Windows saat ini hanya menyediakan sampai PHP 8.2 — lihat catatan di bawah)
+- [Composer](https://getcomposer.org/)
+- MySQL / MariaDB (bisa lewat XAMPP untuk servernya, database-nya saja)
+- Node.js & npm (opsional, hanya jika ingin compile asset front-end)
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+### Catatan khusus pengguna XAMPP (Windows)
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+XAMPP untuk Windows saat ini paling tinggi menyediakan PHP 8.2.12, sedangkan project ini butuh PHP 8.3+. Solusinya:
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+1. Download PHP 8.3+ (Non Thread Safe, x64) dari https://windows.php.net/download/
+2. Extract ke folder terpisah, misalnya `C:\Php83`
+3. Copy `php.ini-development` menjadi `php.ini` di folder yang sama
+4. Di `php.ini`, aktifkan (hapus `;` di depan) baris berikut:
+   ```
+   extension=curl
+   extension=fileinfo
+   extension=mbstring
+   extension=openssl
+   extension=pdo_mysql
+   extension=zip
+   ```
+5. Set `extension_dir` ke path absolut, misalnya:
+   ```
+   extension_dir = "C:\Php83\ext"
+   ```
+6. Gunakan `C:\Php83\php.exe` untuk menjalankan composer dan `artisan` (lihat langkah instalasi di bawah). MySQL dari XAMPP tetap dipakai seperti biasa — cukup pastikan service **MySQL** running di XAMPP Control Panel. Apache XAMPP tidak diperlukan karena project ini dijalankan lewat `artisan serve`, bukan lewat virtual host Apache.
 
-## Agentic Development
+## Instalasi
 
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+1. **Clone repository**
+   ```
+   git clone https://github.com/RobertStuart11/InvenSpace-project.git
+   cd InvenSpace-project
+   ```
 
-```bash
-composer require laravel/boost --dev
+2. **Install dependency PHP**
+   ```
+   composer install
+   ```
+   (pengguna XAMPP: `C:\Php83\php.exe C:\ProgramData\ComposerSetup\bin\composer.phar install`)
 
-php artisan boost:install
-```
+3. **Salin file environment**
+   ```
+   copy .env.example .env
+   ```
+   (Linux/Mac: `cp .env.example .env`)
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+4. **Buat database**
+   Buat database baru bernama `InvenSpace` lewat phpMyAdmin atau MySQL CLI. Sesuaikan kredensial di `.env` bila perlu (`DB_DATABASE`, `DB_USERNAME`, `DB_PASSWORD`).
 
-## Contributing
+5. **Generate application key**
+   ```
+   php artisan key:generate
+   ```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+6. **Jalankan migration & seeder**
+   ```
+   php artisan migrate --seed
+   ```
+   Ini akan membuat semua tabel dan mengisi 3 data pengguna contoh (admin, guru, siswa) dengan password default `password`.
 
-## Code of Conduct
+7. **Jalankan server development**
+   ```
+   php artisan serve
+   ```
+   Buka `http://127.0.0.1:8000` di browser.
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+## Akun Contoh (dari Seeder)
 
-## Security Vulnerabilities
+| Username | Role | Password |
+|---|---|---|
+| `admin` | admin | `password` |
+| `budiguru` | guru | `password` |
+| `sitisiswa` | siswa | `password` |
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+## Lisensi
 
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Project ini dibangun di atas kerangka [Laravel](https://laravel.com), open-source dengan lisensi [MIT](https://opensource.org/licenses/MIT).
