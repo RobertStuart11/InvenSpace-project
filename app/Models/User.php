@@ -7,15 +7,19 @@ use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-#[Fillable(['name', 'email', 'password'])]
+#[Fillable(['role_id', 'nama', 'username', 'password', 'kelas', 'nip'])]
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable
 {
     /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable;
+
+    protected $primaryKey = 'id_user';
 
     /**
      * Get the attributes that should be cast.
@@ -25,8 +29,47 @@ class User extends Authenticatable
     protected function casts(): array
     {
         return [
-            'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    /**
+     * The role this user belongs to.
+     */
+    public function role(): BelongsTo
+    {
+        return $this->belongsTo(Role::class, 'role_id', 'id_role');
+    }
+
+    /**
+     * Loans this user submitted as a student (siswa).
+     */
+    public function loans(): HasMany
+    {
+        return $this->hasMany(Loan::class, 'id_siswa', 'id_user');
+    }
+
+    /**
+     * Loans this user validated as a teacher (guru).
+     */
+    public function validatedLoans(): HasMany
+    {
+        return $this->hasMany(Loan::class, 'id_guru_validator', 'id_user');
+    }
+
+    /**
+     * Complaints this user filed as a student (siswa).
+     */
+    public function complaints(): HasMany
+    {
+        return $this->hasMany(Complaint::class, 'id_siswa', 'id_user');
+    }
+
+    /**
+     * Stock mutations recorded by this user.
+     */
+    public function stockMutations(): HasMany
+    {
+        return $this->hasMany(StockMutation::class, 'id_user', 'id_user');
     }
 }

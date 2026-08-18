@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
@@ -25,21 +26,35 @@ class UserFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => fake()->name(),
-            'email' => fake()->unique()->safeEmail(),
-            'email_verified_at' => now(),
+            'role_id' => Role::factory(),
+            'nama' => fake()->name(),
+            'username' => fake()->unique()->userName(),
             'password' => static::$password ??= Hash::make('password'),
+            'kelas' => null,
+            'nip' => null,
             'remember_token' => Str::random(10),
         ];
     }
 
     /**
-     * Indicate that the model's email address should be unverified.
+     * Indicate that the user is a student (siswa).
      */
-    public function unverified(): static
+    public function siswa(): static
     {
         return $this->state(fn (array $attributes) => [
-            'email_verified_at' => null,
+            'kelas' => fake()->randomElement(['X RPL 1', 'XI RPL 2', 'XII RPL 1']),
+            'nip' => null,
+        ]);
+    }
+
+    /**
+     * Indicate that the user is a teacher (guru).
+     */
+    public function guru(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'kelas' => null,
+            'nip' => (string) fake()->unique()->numerify('##################'),
         ]);
     }
 }
