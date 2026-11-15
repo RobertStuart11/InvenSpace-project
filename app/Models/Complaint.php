@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-#[Fillable(['id_siswa', 'id_peminjaman', 'judul', 'isi', 'status_komplain'])]
+#[Fillable(['id_siswa', 'id_peminjaman', 'judul', 'isi', 'prioritas', 'status_komplain'])]
 class Complaint extends Model
 {
     use HasFactory;

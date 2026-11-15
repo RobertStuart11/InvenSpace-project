@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-#[Fillable(['kode_barang', 'nama_barang', 'stok_total', 'kondisi'])]
+#[Fillable(['kode_barang', 'nama_barang', 'kategori', 'stok_total', 'stok_minimum', 'satuan', 'kondisi'])]
 class Item extends Model
 {
     use HasFactory;
@@ -18,6 +18,7 @@ class Item extends Model
     {
         return [
             'stok_total' => 'integer',
+            'stok_minimum' => 'integer',
         ];
     }
 

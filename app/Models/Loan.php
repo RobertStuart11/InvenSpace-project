@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-#[Fillable(['id_siswa', 'id_guru_validator', 'status', 'tanggal_ajuan', 'tanggal_kembali_aktual'])]
+#[Fillable(['id_siswa', 'id_guru_validator', 'status', 'tanggal_ajuan', 'tanggal_kembali_rencana', 'tanggal_kembali_aktual', 'tujuan'])]
 class Loan extends Model
 {
     use HasFactory;
@@ -20,6 +20,7 @@ class Loan extends Model
         return [
             'tanggal_ajuan' => 'date',
             'tanggal_kembali_aktual' => 'date',
+            'tanggal_kembali_rencana' => 'date',
         ];
     }
 
