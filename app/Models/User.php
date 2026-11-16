@@ -42,6 +42,29 @@ class User extends Authenticatable
     }
 
     /**
+     * Determine whether the user has any of the given roles.
+     */
+    public function hasRole(string ...$roles): bool
+    {
+        return in_array($this->role?->nama_role, $roles, true);
+    }
+
+    public function isAdmin(): bool
+    {
+        return $this->hasRole('admin');
+    }
+
+    public function isGuru(): bool
+    {
+        return $this->hasRole('guru');
+    }
+
+    public function isSiswa(): bool
+    {
+        return $this->hasRole('siswa');
+    }
+
+    /**
      * Loans this user submitted as a student (siswa).
      */
     public function loans(): HasMany

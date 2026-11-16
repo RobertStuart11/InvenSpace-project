@@ -3,7 +3,7 @@
 use App\Http\Controllers\PreviewController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/masuk', [PreviewController::class, 'login'])->name('preview.login');
+Route::redirect('/masuk-preview', '/masuk')->name('preview.login');
 
 Route::prefix('preview')->name('preview.')->group(function () {
     Route::get('/',                 [PreviewController::class, 'dashboard'])->name('dashboard');
