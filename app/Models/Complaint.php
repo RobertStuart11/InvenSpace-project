@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-#[Fillable(['id_siswa', 'id_peminjaman', 'judul', 'isi', 'prioritas', 'status_komplain'])]
+#[Fillable(['id_siswa', 'id_peminjaman', 'judul', 'isi', 'prioritas'])]
 class Complaint extends Model
 {
     use HasFactory;
@@ -30,5 +30,13 @@ class Complaint extends Model
     public function loan(): BelongsTo
     {
         return $this->belongsTo(Loan::class, 'id_peminjaman', 'id_peminjaman');
+    }
+
+    /**
+     * The admin who responded to this complaint.
+     */
+    public function penanggap(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'id_penanggap', 'id_user');
     }
 }

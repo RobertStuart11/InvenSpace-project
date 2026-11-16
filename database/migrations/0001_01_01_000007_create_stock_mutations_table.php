@@ -15,8 +15,10 @@ return new class extends Migration
             $table->id('id_mutasi');
             $table->foreignId('id_barang')->constrained('items', 'id_barang')->cascadeOnUpdate()->restrictOnDelete();
             $table->foreignId('id_user')->constrained('users', 'id_user')->cascadeOnUpdate()->restrictOnDelete();
-            $table->integer('jumlah');
+            $table->foreignId('id_peminjaman')->nullable()->constrained('loans', 'id_peminjaman')->cascadeOnUpdate()->nullOnDelete();
+            $table->unsignedInteger('jumlah');
             $table->enum('tipe', ['MASUK', 'KELUAR']);
+            $table->string('keterangan')->nullable();
             $table->timestamps();
         });
     }

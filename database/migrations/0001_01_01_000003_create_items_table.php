@@ -15,7 +15,10 @@ return new class extends Migration
             $table->id('id_barang');
             $table->string('kode_barang')->unique();
             $table->string('nama_barang');
+            $table->string('kategori')->default('Lainnya');
             $table->unsignedInteger('stok_total')->default(0);
+            $table->unsignedInteger('stok_minimum')->default(0);
+            $table->string('satuan', 20)->default('unit');
             $table->enum('kondisi', ['baik', 'rusak', 'hilang'])->default('baik');
             $table->timestamps();
         });

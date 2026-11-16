@@ -17,7 +17,10 @@ return new class extends Migration
             $table->foreignId('id_peminjaman')->nullable()->constrained('loans', 'id_peminjaman')->cascadeOnUpdate()->nullOnDelete();
             $table->string('judul');
             $table->text('isi');
+            $table->enum('prioritas', ['rendah', 'sedang', 'tinggi'])->default('sedang');
             $table->enum('status_komplain', ['diajukan', 'diproses', 'selesai', 'ditolak'])->default('diajukan');
+            $table->text('tanggapan')->nullable();
+            $table->foreignId('id_penanggap')->nullable()->constrained('users', 'id_user')->cascadeOnUpdate()->nullOnDelete();
             $table->timestamps();
         });
     }

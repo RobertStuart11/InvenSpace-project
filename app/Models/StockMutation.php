@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-#[Fillable(['id_barang', 'id_user', 'jumlah', 'tipe', 'keterangan'])]
+#[Fillable(['id_barang', 'id_user', 'id_peminjaman', 'jumlah', 'tipe', 'keterangan'])]
 class StockMutation extends Model
 {
     use HasFactory;
@@ -37,5 +37,13 @@ class StockMutation extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class, 'id_user', 'id_user');
+    }
+
+    /**
+     * The loan this mutation relates to (optional).
+     */
+    public function loan(): BelongsTo
+    {
+        return $this->belongsTo(Loan::class, 'id_peminjaman', 'id_peminjaman');
     }
 }

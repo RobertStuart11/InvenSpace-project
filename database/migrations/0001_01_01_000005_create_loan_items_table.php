@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignId('id_peminjaman')->constrained('loans', 'id_peminjaman')->cascadeOnUpdate()->cascadeOnDelete();
             $table->foreignId('id_barang')->constrained('items', 'id_barang')->cascadeOnUpdate()->restrictOnDelete();
             $table->unsignedInteger('jumlah_pinjam');
+            $table->unique(['id_peminjaman', 'id_barang']);
             $table->timestamps();
         });
     }

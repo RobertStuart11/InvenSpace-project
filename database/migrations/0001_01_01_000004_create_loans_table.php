@@ -16,8 +16,13 @@ return new class extends Migration
             $table->foreignId('id_siswa')->constrained('users', 'id_user')->cascadeOnUpdate()->restrictOnDelete();
             $table->foreignId('id_guru_validator')->nullable()->constrained('users', 'id_user')->cascadeOnUpdate()->nullOnDelete();
             $table->enum('status', ['diajukan', 'disetujui', 'ditolak', 'dipinjam', 'dikembalikan'])->default('diajukan');
+            $table->text('tujuan')->nullable();
             $table->date('tanggal_ajuan');
+            $table->date('tanggal_pinjam');
+            $table->date('tanggal_kembali_rencana');
             $table->date('tanggal_kembali_aktual')->nullable();
+            $table->date('tanggal_validasi')->nullable();
+            $table->text('catatan_validator')->nullable();
             $table->timestamps();
         });
     }

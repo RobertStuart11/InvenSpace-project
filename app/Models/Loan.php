@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-#[Fillable(['id_siswa', 'id_guru_validator', 'status', 'tanggal_ajuan', 'tanggal_kembali_rencana', 'tanggal_kembali_aktual', 'tujuan'])]
+#[Fillable(['id_siswa', 'tanggal_ajuan', 'tanggal_pinjam', 'tanggal_kembali_rencana', 'tujuan'])]
 class Loan extends Model
 {
     use HasFactory;
@@ -19,8 +19,10 @@ class Loan extends Model
     {
         return [
             'tanggal_ajuan' => 'date',
-            'tanggal_kembali_aktual' => 'date',
+            'tanggal_pinjam' => 'date',
             'tanggal_kembali_rencana' => 'date',
+            'tanggal_kembali_aktual' => 'date',
+            'tanggal_validasi' => 'date',
         ];
     }
 
@@ -54,5 +56,13 @@ class Loan extends Model
     public function complaints(): HasMany
     {
         return $this->hasMany(Complaint::class, 'id_peminjaman', 'id_peminjaman');
+    }
+
+    /**
+     * Stock mutations linked to this loan.
+     */
+    public function stockMutations(): HasMany
+    {
+        return $this->hasMany(StockMutation::class, 'id_peminjaman', 'id_peminjaman');
     }
 }

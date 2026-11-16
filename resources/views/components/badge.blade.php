@@ -14,6 +14,9 @@
         'baik'          => ['Baik',         'bg-emerald-50 text-emerald-700 ring-emerald-200'],
         'rusak'         => ['Rusak',        'bg-rose-50 text-rose-700 ring-rose-200'],
         'hilang'        => ['Hilang',       'bg-slate-200 text-slate-700 ring-slate-300'],
+        'rendah'        => ['Rendah',       'bg-slate-100 text-slate-700 ring-slate-200'],
+        'sedang'        => ['Sedang',       'bg-amber-50 text-amber-700 ring-amber-200'],
+        'tinggi'        => ['Tinggi',       'bg-rose-50 text-rose-700 ring-rose-200'],
 
         // ===== role =====
         'admin'         => ['Admin',        'bg-indigo-50 text-indigo-700 ring-indigo-200'],
